@@ -6,7 +6,7 @@ workflows:
 
     # Link the App Store Connect key you add in Codemagic UI (Teams ➜ Integrations)
     integrations:
-      app_store_connect: YOUR_ASC_KEY_NAME
+      app_store_connect: Hehehe
 
     environment:
       flutter: stable
