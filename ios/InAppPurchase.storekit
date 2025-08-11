@@ -1,0 +1,90 @@
+{
+  "identifier" : "E9FB2D59",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "6740198974",
+      "localizations" : [
+        {
+          "description" : "Discover more people",
+          "displayName" : "100 Swipe Rights",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Daha fazla Kişi Keşfet",
+          "displayName" : "100 Swipe Hakkı",
+          "locale" : "tr"
+        }
+      ],
+      "productID" : "prod02c2ddbca0",
+      "referenceName" : "patido100swipe",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6739349684",
+    "_developerTeamID" : "24R8JHGZM8",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 765365408.50011396,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

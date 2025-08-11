@@ -1,0 +1,5 @@
+NSCameraUsageDescription = "Patido'nun, fotoğraf çekmek ve paylaşmak için kameranızı kullanmasına izin verin.";
+NSPhotoLibraryUsageDescription = "Patido'nun, fotoğraflarınıza erişmesine izin vererek, fotoğraflarınızı paylaşabilir ve galerinizden içerik seçebilirsiniz.";
+PermissionGroupNotification = "Patido'nun, bağlantılarınız, mesajlarınız ve diğer önemli güncellemeler hakkında sizi bilgilendirmesi için bildirim göndermesine izin verin";
+NSUserTrackingUsageDescription = "Patido'nun, deneyiminizi iyileştirmek ve size uygun içerikler göstermek için kullanım verilerinizi toplamasına izin verin";
+NSLocationAlwaysAndWhenInUseUsageDescription = "Patido'nun, çevrenizdeki kişileri bulabilmek ve kişiselleştirilmiş bir deneyim sunabilmek için konum bilginize erişmesine izin verin.";

@@ -1,0 +1,10 @@
+flutter_native_splash:
+  color: "#F25822"
+  color_dark: "#4B39EF"
+  android_12:
+    color: "#F25822"
+    color_dark: "#4B39EF"
+  android: true
+  ios: true
+  web: false
+  background_image_ios: 'assets/images/First_Screen.jpg'

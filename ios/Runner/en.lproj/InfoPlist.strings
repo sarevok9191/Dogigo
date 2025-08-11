@@ -1,0 +1,6 @@
+NSCameraUsageDescription = "Allow Patido to access your camera to take and share photos.";
+NSPhotoLibraryUsageDescription = "Allow Patido to access your photos so you can share them and select content from your gallery.";
+PermissionGroupNotification = "Allow Patido to send notifications to keep you updated on connections, messages, and other important updates.";
+NSUserTrackingUsageDescription = "Allow Patido to collect usage data to enhance your experience and show you relevant content.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "Allow Patido to access your location to find nearby users and provide a personalized experience.";
+NSLocationWhenInUseUsageDescription = "Allow Patido to access your location to find nearby users and provide a personalized experience.";

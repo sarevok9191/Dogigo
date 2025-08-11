@@ -1,0 +1,2 @@
+/Users/alicemalturan/Downloads/patido_app 47/android/app/.cxx/RelWithDebInfo/k4q2o6r6/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/alicemalturan/Downloads/patido_app 47/android/app/.cxx/RelWithDebInfo/k4q2o6r6/arm64-v8a/CMakeFiles/rebuild_cache.dir

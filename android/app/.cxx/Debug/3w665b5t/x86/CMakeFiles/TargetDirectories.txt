@@ -1,0 +1,2 @@
+/Users/alicemalturan/Downloads/patido_app 47/android/app/.cxx/Debug/3w665b5t/x86/CMakeFiles/edit_cache.dir
+/Users/alicemalturan/Downloads/patido_app 47/android/app/.cxx/Debug/3w665b5t/x86/CMakeFiles/rebuild_cache.dir

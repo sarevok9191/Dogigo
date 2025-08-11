@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "990607468101",
+    "project_id": "patidoapp",
+    "storage_bucket": "patidoapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990607468101:android:84866bb742a663b36b252c",
+        "android_client_info": {
+          "package_name": "com.patido.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUeqhwCs7myB9U7Fbsg2pVOrs0Jw0jQy4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

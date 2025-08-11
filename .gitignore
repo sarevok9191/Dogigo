@@ -1,0 +1,25 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+.pub/
+build/
+flutter_*.png
+
+# iOS
+ios/Flutter/.symlinks
+ios/Pods
+ios/Podfile.lock
+ios/Runner.xcworkspace
+DerivedData/
+
+# Android
+.android/
+.gradle/
+local.properties
+
+# VS Code
+.vscode/
+
+# Others
+*.lock
+*.log
