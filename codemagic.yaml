@@ -1,0 +1,61 @@
+workflows:
+  ios_testflight:
+    name: iOS • TestFlight
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    # Link the App Store Connect key you add in Codemagic UI (Teams ➜ Integrations)
+    integrations:
+      app_store_connect: YOUR_ASC_KEY_NAME
+
+    environment:
+      flutter: stable
+      vars:
+        # Set these in Codemagic ➜ Variables (or hardcode here for testing)
+        BUNDLE_ID: com.patido.app
+        # Numeric Apple ID of the app record in App Store Connect (App Information ➜ Apple ID)
+        APP_STORE_APPLE_ID: 6739349684
+
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+        - ~/.gradle/caches
+        - ios/Pods
+
+    scripts:
+      - name: Flutter pub get
+        script: flutter pub get
+
+      - name: Derive build-name/build-number from pubspec.yaml
+        script: |
+          BUILD_NAME=$(grep -E "^version:" pubspec.yaml | sed 's/version:[[:space:]]*\([^+]*\)+.*/\1/')
+          BUILD_NUMBER=$(grep -E "^version:" pubspec.yaml | sed 's/.*+\([0-9]\+\).*/\1/')
+          echo "BUILD_NAME=$BUILD_NAME" >> $CM_ENV
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $CM_ENV
+
+      - name: Fetch & install signing files (App Store)
+        script: |
+          keychain initialize
+          # Fetch distribution cert + provisioning profiles for your bundle id
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          keychain add-certificates
+          xcode-project use-profiles
+
+      - name: Build IPA (release)
+        script: |
+          flutter build ipa --release \
+            --export-method app-store \
+            --build-name="$BUILD_NAME" \
+            --build-number="$BUILD_NUMBER"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/**/dSYMs/**
+
+    publishing:
+      app_store_connect:
+        # Uses the integration above
+        auth: integration
+        submit_to_testflight: true      # auto-submit to TestFlight beta review
+        beta_groups:
+          - CK Test           # existing group name in TestFlight
