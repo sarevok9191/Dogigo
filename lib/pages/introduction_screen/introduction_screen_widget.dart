@@ -104,7 +104,7 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
 
     // Reserve space so scroll content never overlaps fixed buttons
     final contentBottomReserve =
-        buttonHeight + bottomButtonsPad + gapMd * 1.2; // more space above buttons
+        buttonHeight + bottomButtonsPad + gapMd * 1.6; // more space above buttons
 
     return GestureDetector(
       onTap: () {
