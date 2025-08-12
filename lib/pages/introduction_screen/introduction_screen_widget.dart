@@ -207,7 +207,7 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
                           ),
                           SizedBox(height: subtitleTopGap),
                           Text(
-                            'Connect with local dog owners, plan playdates,\nand find furry friends nearby!',
+                            'Connect with local dog owners, plan\n playdates,and find furry friends nearby!',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.manrope(
                               fontSize: subtitleFont,
