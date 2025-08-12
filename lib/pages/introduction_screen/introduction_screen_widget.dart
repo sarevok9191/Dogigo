@@ -82,8 +82,9 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
     const subtitleLineHeight = 1.5;
 
     // Artwork
-    final imageHeight = math.min(w * 0.78, h * 0.46);
-    final pullUp = imageHeight * 0.45; // overlap distance
+    final imageHeight = math.min(w * 0.72, h * 0.42);
+    // IMPORTANT: no overlap now
+    final pullUp = 0.0;
 
     // Buttons
     final buttonHeight = (w * 0.14).clamp(48.0, 56.0);
@@ -91,6 +92,9 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
     final buttonText = (w * 0.04).clamp(14.0, 16.0);
     final bottomButtonsPad =
         (h * 0.04 + MediaQuery.of(context).padding.bottom).clamp(24.0, 48.0);
+
+    // Reserve space inside the content so it never sits under fixed buttons
+    final contentBottomReserve = bottomButtonsPad + buttonHeight + gapSm + 8.0;
 
     List<BoxShadow> bottomLiftShadow() => [
           BoxShadow(
@@ -140,139 +144,143 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
                   // ===================== MAIN CONTENT =====================
                   Align(
                     alignment: Alignment.center,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        // Top logo + app name
-                        Padding(
-                          padding: EdgeInsets.only(top: topLogoPad),
-                          child: Column(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/login-logo.svg',
-                                width: logoW,
-                                height: logoH,
-                              ),
-                              SizedBox(height: gapXs),
-                              Text(
-                                FFLocalizations.of(context)
-                                    .getText('hkf2u7xg' /* Patido */),
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: GoogleFonts.kumbhSans(
-                                        fontWeight: FontWeight.bold,
-                                      ).fontFamily,
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      fontSize: appNameSize,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Image + Headline stack
-                        Padding(
-                          padding: EdgeInsets.only(top: gapSm),
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: contentBottomReserve),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Top logo + app name
+                            Padding(
+                              padding: EdgeInsets.only(top: topLogoPad),
+                              child: Column(
                                 children: [
-                                  Stack(
-                                    clipBehavior: Clip.none,
-                                    alignment: Alignment.topCenter,
+                                  SvgPicture.asset(
+                                    'assets/images/login-logo.svg',
+                                    width: logoW,
+                                    height: logoH,
+                                  ),
+                                  SizedBox(height: gapXs),
+                                  Text(
+                                    FFLocalizations.of(context)
+                                        .getText('hkf2u7xg' /* Patido */),
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: GoogleFonts.kumbhSans(
+                                            fontWeight: FontWeight.bold,
+                                          ).fontFamily,
+                                          color:
+                                              FlutterFlowTheme.of(context).primary,
+                                          fontSize: appNameSize,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // Image + Headline stack
+                            Padding(
+                              padding: EdgeInsets.only(top: gapSm),
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      // Image
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: sidePad),
-                                        child: SizedBox(
-                                          height: imageHeight,
-                                          child: Image.asset(
-                                            'assets/images/introscreendogs.png',
-                                            fit: BoxFit.contain,
+                                      Stack(
+                                        clipBehavior: Clip.none,
+                                        alignment: Alignment.topCenter,
+                                        children: [
+                                          // Image
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: sidePad),
+                                            child: SizedBox(
+                                              height: imageHeight,
+                                              child: Image.asset(
+                                                'assets/images/introscreendogs.png',
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                          // Headline + subtitle (no overlap)
+                                          Positioned(
+                                            bottom: -pullUp, // == 0
+                                            left: sidePad,
+                                            right: sidePad,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  'Where Dogs Make',
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.manrope(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: heroFontSize,
+                                                    height: 1.1,
+                                                    color: heroBaseColor,
+                                                  ),
+                                                ),
+                                                SizedBox(height: headlineGap),
+                                                Text(
+                                                  'Best Friends.',
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.manrope(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: heroFontSize,
+                                                    height: 1.1,
+                                                    color: heroAccentColor,
+                                                  ),
+                                                ),
+                                                SizedBox(height: subtitleTopGap),
+                                                Text(
+                                                  'Connect with local dog owners, plan playdates,\nand find furry friends nearby!',
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.manrope(
+                                                    fontSize: subtitleFont,
+                                                    fontWeight: FontWeight.w500,
+                                                    height: subtitleLineHeight,
+                                                    color:
+                                                        FlutterFlowTheme.of(context)
+                                                            .secondaryText,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      // With no overlap, just a normal gap below the stack
+                                      SizedBox(height: gapMd),
+
+                                      // Orange separator line
+                                      Center(
+                                        child: Container(
+                                          width: (w * 0.18).clamp(48.0, 80.0),
+                                          height:
+                                              (minSide * 0.012).clamp(4.0, 8.0),
+                                          decoration: BoxDecoration(
+                                            color: heroAccentColor,
+                                            borderRadius:
+                                                BorderRadius.circular(999),
+                                            boxShadow: bottomLiftShadow(),
                                           ),
                                         ),
                                       ),
-                                      // Headline + subtitle pulled up
-                                      Positioned(
-                                        bottom: -pullUp,
-                                        left: sidePad,
-                                        right: sidePad,
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              'Where Dogs Make',
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.manrope(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: heroFontSize,
-                                                height: 1.1,
-                                                color: heroBaseColor,
-                                              ),
-                                            ),
-                                            SizedBox(height: headlineGap),
-                                            Text(
-                                              'Best Friends.',
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.manrope(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: heroFontSize,
-                                                height: 1.1,
-                                                color: heroAccentColor,
-                                              ),
-                                            ),
-                                            SizedBox(height: subtitleTopGap),
-                                            Text(
-                                              'Connect with local dog owners, plan playdates,\nand find furry friends nearby!',
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.manrope(
-                                                fontSize: subtitleFont,
-                                                fontWeight: FontWeight.w500,
-                                                height: subtitleLineHeight,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      SizedBox(height: gapSm),
                                     ],
-                                  ),
-                                  SizedBox(height: pullUp + gapMd),
-
-                                  // Orange separator line
-                                  Center(
-                                    child: Container(
-                                      width: (w * 0.18).clamp(48.0, 80.0),
-                                      height:
-                                          (minSide * 0.012).clamp(4.0, 8.0),
-                                      decoration: BoxDecoration(
-                                        color: heroAccentColor,
-                                        borderRadius:
-                                            BorderRadius.circular(999),
-                                        boxShadow: bottomLiftShadow(),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: gapSm),
-                                ],
-                              );
-                            },
-                          ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-
-                        const Spacer(),
-                        SizedBox(height: gapXs),
-                      ],
+                      ),
                     ),
                   ),
 
-                  // Buttons
+                  // Buttons (fixed to bottom)
                   Positioned(
                     bottom: bottomButtonsPad,
                     left: sidePad,
@@ -398,7 +406,7 @@ class _LanguageChip extends StatelessWidget {
         await action_blocks.getStaticValues(context);
       },
       elevation: 8,
-      offset: Offset(0, chipH), // drop menu just below the chip
+      offset: Offset(0, chipH),
       color: const Color.fromARGB(255, 255, 255, 255),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       constraints: BoxConstraints(minWidth: menuMinW),
