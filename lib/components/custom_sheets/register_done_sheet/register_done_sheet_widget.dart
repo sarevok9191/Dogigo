@@ -1,11 +1,12 @@
 // lib/components/custom_sheets/register_done_sheet/register_done_sheet_widget.dart
 
 import 'dart:typed_data';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:provider/provider.dart';            // for context.watch<>
-import 'package:google_fonts/google_fonts.dart';    // for GoogleFonts
+import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:webviewx_plus/webviewx_plus.dart';
 
 import '/backend/backend.dart';
@@ -62,14 +63,8 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
       final incomingDogs =
           widget.dogs.where((e) => e.dogType != null).toList();
       final incomingAvatars = widget.dogAvatars.toList();
-      _model.dogs = [
-        widget.primaryDog,
-        ...incomingDogs,
-      ];
-      _model.dogAvatars = [
-        widget.primaryDogAvatar,
-        ...incomingAvatars,
-      ];
+      _model.dogs = [widget.primaryDog, ...incomingDogs];
+      _model.dogAvatars = [widget.primaryDogAvatar, ...incomingAvatars];
       safeSetState(() {});
     });
   }
@@ -91,36 +86,45 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
     final h = size.height;
 
     // paddings
-    final hPad = (w * 0.06).clamp(12.0, 48.0);
+    final hPad = (w * 0.06).clamp(12.0, 48.0).toDouble();
 
     // headline & type scale
-    final h1Size = (w * 0.065).clamp(20.0, 28.0);
-    final titleSize = (w * 0.055).clamp(16.0, 22.0);
-    final bodySize = (w * 0.04).clamp(13.0, 16.0);
-    final smallSize = (w * 0.035).clamp(12.0, 14.0);
+    final h1Size = (w * 0.060).clamp(20.0, 26.0).toDouble();
+    final titleSize = (w * 0.052).clamp(16.0, 22.0).toDouble();
+    final bodySize = (w * 0.040).clamp(13.0, 16.0).toDouble();
+    final smallSize = (w * 0.032).clamp(12.0, 14.0).toDouble();
 
     // icons
-    final backSize = (w * 0.08).clamp(28.0, 40.0);
-    final backIcon = (backSize * 0.65).clamp(18.0, 26.0);
-    final smallIcon = (w * 0.045).clamp(14.0, 20.0);
+    final backSize = (w * 0.08).clamp(28.0, 40.0).toDouble();
+    final backIcon = (backSize * 0.65).clamp(18.0, 26.0).toDouble();
+    final smallIcon = (w * 0.038).clamp(13.0, 16.0).toDouble();
 
-    // card
-    final cardW = (w - (hPad * 2)).clamp(300.0, 560.0);
-    final cardH = (h * 0.72).clamp(520.0, 720.0);
-    final cardRadius = 20.0;
+    // card — lower & a bit taller
+    final cardW = (w - (hPad * 2)).clamp(320.0, 420.0).toDouble();
+    final cardH = (h * 0.60).clamp(560.0, 700.0).toDouble();
+    final cardRadius = 24.0;
 
     // avatar
-    final userAvatar = (cardW * 0.32).clamp(120.0, 180.0);
-    final dogAvatarR = (cardW * 0.075).clamp(20.0, 28.0);
+    final userAvatar = (cardW * 0.28).clamp(96.0, 140.0).toDouble();
+    final dogAvatarR = (cardW * 0.070).clamp(18.0, 26.0).toDouble();
 
-    // rows / spacers
-    final infoRowH = (w * 0.11).clamp(36.0, 44.0);
-    final gapSm = (w * 0.02).clamp(6.0, 10.0);
-    final gapMd = (w * 0.04).clamp(12.0, 20.0);
-    final gapLg = (h * 0.06).clamp(36.0, 64.0);
+    // spacers
+    final gapSm = (w * 0.020).clamp(6.0, 10.0).toDouble();
+    final gapMd = (w * 0.038).clamp(12.0, 20.0).toDouble();
+    final gapLg = (h * 0.060).clamp(36.0, 64.0).toDouble();
+
+    // info row height
+    final infoRowH = (w * 0.075).clamp(28.0, 34.0).toDouble();
+
+    // header/card placement
+    final safeTop = MediaQuery.of(context).padding.top;
+    final backTopPad =
+        math.min(math.max(math.max(hPad, safeTop) + gapMd, 55.0), 72.0);
+    final headerTopExtra = (h * 0.075).clamp(48.0, 96.0).toDouble();
+    const cardAlignY = -0.05;
 
     // buttons
-    final buttonH = (w * 0.14).clamp(48.0, 56.0);
+    final buttonH = (w * 0.14).clamp(48.0, 56.0).toDouble();
     final buttonRadius = 28.0;
 
     // derived values
@@ -151,9 +155,9 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
 
             Column(
               children: [
-                // Back button
+                // Back button (kept a bit lower)
                 Padding(
-                  padding: EdgeInsets.fromLTRB(hPad, hPad, hPad, 0),
+                  padding: EdgeInsets.fromLTRB(hPad, backTopPad, hPad, 0),
                   child: Row(
                     children: [
                       InkWell(
@@ -181,50 +185,50 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
 
                 // “Almost done!” header
                 Padding(
-                  padding: EdgeInsets.fromLTRB(hPad, gapMd, hPad, 0),
+                  padding: EdgeInsets.fromLTRB(hPad, headerTopExtra, hPad, 0),
                   child: Text(
-                    FFLocalizations.of(context).getText(
-                      'k8s0sebx' /* Neredeyse Bitti */,
-                    ),
+                    FFLocalizations.of(context)
+                        .getText('k8s0sebx' /* Neredeyse Bitti */),
                     textAlign: TextAlign.center,
                     style: GoogleFonts.manrope(
                       fontSize: h1Size,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Colors.black,
                     ),
                   ),
                 ),
 
-                // White card & content (with bottom-lift shadow; no elevation)
+                // White card & content
                 Expanded(
                   child: Align(
-                    alignment: const Alignment(0, -0.5),
+                    alignment: const Alignment(0, cardAlignY),
                     child: SizedBox(
                       width: cardW,
                       height: cardH,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(color: const Color(0xFFEAEAEA), width: 2),
+                          border: Border.all(
+                              color: const Color(0xFFEAEAEA), width: 2),
                           borderRadius: BorderRadius.circular(cardRadius),
                           boxShadow: [
-                            // bottom-emphasized shadow
                             BoxShadow(
                               color: Colors.black.withOpacity(0.08),
                               blurRadius: 24,
-                              spreadRadius: 0,
                               offset: const Offset(0, 12),
                             ),
                             BoxShadow(
                               color: Colors.black.withOpacity(0.03),
                               blurRadius: 8,
-                              spreadRadius: 0,
                               offset: const Offset(0, 2),
                             ),
                           ],
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: hPad * 0.25, vertical: gapLg * 0.5),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: hPad * 0.25,
+                            vertical: gapLg * 1.05,
+                          ),
                           child: Column(
                             children: [
                               // Avatar
@@ -234,30 +238,30 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: const Color(0xFFFABBA4),
-                                    width: 2,
-                                  ),
+                                      color: const Color(0xFFFABBA4),
+                                      width: 2),
                                   image: DecorationImage(
-                                    image: Image.memory(
-                                      widget.userAvatar?.bytes ?? Uint8List.fromList([]),
-                                    ).image,
+                                    image: Image.memory(widget.userAvatar?.bytes ??
+                                            Uint8List.fromList([]))
+                                        .image,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
-                              SizedBox(height: gapSm),
+                              SizedBox(height: gapMd * 0.60),
 
                               // Name & Username
                               Text(
                                 '${FFAppState().RegisteringUser.firstName} ${FFAppState().RegisteringUser.lastName}',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.manrope(
-                                  fontSize: (titleSize + 2).clamp(18.0, 24.0),
+                                  fontSize:
+                                      (titleSize + 2).clamp(18.0, 24.0),
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
                                 ),
                               ),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               Text(
                                 '@${FFAppState().RegisteringUser.username}',
                                 style: GoogleFonts.manrope(
@@ -265,43 +269,66 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                                   color: const Color(0xFF51504F),
                                 ),
                               ),
-                              SizedBox(height: gapSm),
+                              SizedBox(height: gapMd * 0.50),
 
-                              // User info row in orange
+                              // Compact info row
                               SizedBox(
                                 height: infoRowH,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(isMale ? Icons.male : Icons.female, size: smallIcon, color: orangeColor),
-                                    SizedBox(width: 4),
+                                    Icon(
+                                      isMale ? Icons.male : Icons.female,
+                                      size: smallIcon,
+                                      color: orangeColor,
+                                    ),
+                                    const SizedBox(width: 6),
                                     Text(
                                       isMale ? 'Male' : 'Female',
-                                      style: TextStyle(color: orangeColor, fontSize: smallSize),
+                                      style: TextStyle(
+                                        color: orangeColor,
+                                        fontSize: smallSize,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                    SizedBox(width: 8),
-                                    Container(width: 1, height: smallIcon + 2, color: Colors.grey[600]),
-                                    SizedBox(width: 8),
+                                    const SizedBox(width: 12),
+                                    Text('•',
+                                        style: TextStyle(
+                                            color: orangeColor,
+                                            fontSize: smallSize + 2)),
+                                    const SizedBox(width: 12),
                                     Text(
                                       '${functions.calculateAge(FFAppState().RegisteringUser.dateBirth)} years old',
-                                      style: TextStyle(color: orangeColor, fontSize: smallSize),
+                                      style: TextStyle(
+                                        color: orangeColor,
+                                        fontSize: smallSize,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                    SizedBox(width: 8),
-                                    Container(width: 1, height: smallIcon + 2, color: Colors.grey[600]),
-                                    SizedBox(width: 8),
+                                    const SizedBox(width: 12),
+                                    Text('•',
+                                        style: TextStyle(
+                                            color: orangeColor,
+                                            fontSize: smallSize + 2)),
+                                    const SizedBox(width: 12),
                                     Flexible(
                                       child: Text(
                                         '${FFAppState().RegisteringUser.city.title}, ${FFAppState().RegisteringUser.country.title}',
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: orangeColor, fontSize: smallSize),
+                                        style: TextStyle(
+                                          color: orangeColor,
+                                          fontSize: smallSize,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
+
                               Divider(
                                 color: const Color.fromARGB(255, 155, 155, 155),
-                                height: gapLg * 0.6,
+                                height: gapMd * 1.2,
                               ),
 
                               // Dogs header
@@ -310,17 +337,16 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.pets, color: orangeColor, size: smallIcon),
-                                    SizedBox(width: 8),
-                                    Flexible(
-                                      child: Text(
-                                        'Dogs of ${FFAppState().RegisteringUser.firstName}',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.manrope(
-                                          fontSize: titleSize,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black87,
-                                        ),
+                                    Icon(Icons.pets,
+                                        color: orangeColor, size: smallIcon),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'Dogs of ${FFAppState().RegisteringUser.firstName}',
+                                      style: GoogleFonts.manrope(
+                                        fontSize:
+                                            (titleSize - 2).clamp(16.0, 20.0),
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black87,
                                       ),
                                     ),
                                   ],
@@ -332,85 +358,142 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                                 child: ListView(
                                   padding: EdgeInsets.zero,
                                   children: [
-                                    ..._model.dogs.asMap().entries.map((entry) {
+                                    ..._model.dogs
+                                        .asMap()
+                                        .entries
+                                        .map((entry) {
                                       final idx = entry.key;
                                       final dog = entry.value;
                                       return Container(
-                                        margin: EdgeInsets.only(bottom: gapSm),
-                                        padding: EdgeInsets.all(gapSm),
+                                        margin:
+                                            EdgeInsets.only(bottom: gapSm),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: gapSm,
+                                          vertical: gapSm * 0.9,
+                                        ),
                                         decoration: BoxDecoration(
                                           gradient: const LinearGradient(
-                                            colors: [Color(0xFFFEEEE9), Colors.white],
+                                            colors: [
+                                              Color(0xFFFEEEE9),
+                                              Colors.white
+                                            ],
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                           ),
-                                          border: Border.all(color: const Color(0xFFFEEEE9)),
-                                          borderRadius: BorderRadius.circular(12),
+                                          border: Border.all(
+                                              color:
+                                                  const Color(0xFFFEEEE9)),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black
+                                                  .withOpacity(0.04),
+                                              blurRadius: 6,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
                                         ),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
-                                            // Dog avatar
                                             CircleAvatar(
                                               radius: dogAvatarR,
                                               backgroundImage: MemoryImage(
-                                                _model.dogAvatars[idx].bytes ?? Uint8List.fromList([]),
+                                                _model.dogAvatars[idx].bytes ??
+                                                    Uint8List.fromList([]),
                                               ),
                                             ),
                                             SizedBox(width: gapSm),
-
-                                            // Name + details
                                             Expanded(
                                               child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisSize:
+                                                    MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  // Dog name, left-aligned
-                                                  Align(
-                                                    alignment: Alignment.centerLeft,
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(left: gapSm * 0.8, top: 2.0, bottom: 2.0),
-                                                      child: Text(
-                                                        dog.title,
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: GoogleFonts.manrope(
-                                                          fontSize: (titleSize - 2).clamp(16.0, 20.0),
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
+                                                  Text(
+                                                    dog.title,
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow
+                                                        .ellipsis,
+                                                    style:
+                                                        GoogleFonts.manrope(
+                                                      fontSize: (titleSize - 2)
+                                                          .clamp(16.0, 20.0),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Colors.black,
                                                     ),
                                                   ),
-                                                  SizedBox(height: gapSm * 0.6),
-
-                                                  // Breed | Gender | Age
+                                                  SizedBox(
+                                                      height: gapSm * 0.5),
                                                   Wrap(
-                                                    crossAxisAlignment: WrapCrossAlignment.center,
-                                                    spacing: 6,
+                                                    crossAxisAlignment:
+                                                        WrapCrossAlignment
+                                                            .center,
+                                                    spacing: 10,
                                                     runSpacing: 4,
-                                                    alignment: WrapAlignment.center,
                                                     children: [
                                                       Text(
-                                                        dog.dogType?.title ?? '',
-                                                        style: GoogleFonts.manrope(fontSize: bodySize, color: orangeColor),
+                                                        dog.dogType?.title ??
+                                                            '',
+                                                        style: GoogleFonts
+                                                            .manrope(
+                                                          fontSize: bodySize,
+                                                          color: orangeColor,
+                                                        ),
                                                       ),
-                                                      Container(width: 1, height: bodySize - 1, color: orangeColor),
+                                                      Text('•',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  orangeColor,
+                                                              fontSize:
+                                                                  bodySize +
+                                                                      2)),
                                                       Row(
-                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
                                                         children: [
-                                                          Icon(dog.gender == 1 ? Icons.male : Icons.female, size: bodySize, color: orangeColor),
-                                                          SizedBox(width: 4),
+                                                          Icon(
+                                                              dog.gender == 1
+                                                                  ? Icons.male
+                                                                  : Icons
+                                                                      .female,
+                                                              size: bodySize,
+                                                              color:
+                                                                  orangeColor),
+                                                          const SizedBox(
+                                                              width: 4),
                                                           Text(
-                                                            dog.gender == 1 ? 'Male' : 'Female',
-                                                            style: GoogleFonts.manrope(fontSize: bodySize, color: orangeColor),
+                                                            dog.gender == 1
+                                                                ? 'Male'
+                                                                : 'Female',
+                                                            style: GoogleFonts
+                                                                .manrope(
+                                                              fontSize:
+                                                                  bodySize,
+                                                              color:
+                                                                  orangeColor,
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
-                                                      Container(width: 1, height: bodySize - 1, color: orangeColor),
+                                                      Text('•',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  orangeColor,
+                                                              fontSize:
+                                                                  bodySize +
+                                                                      2)),
                                                       Text(
                                                         '${functions.calculateAge(dog.birthDate)} years old',
-                                                        style: GoogleFonts.manrope(fontSize: bodySize, color: orangeColor),
+                                                        style: GoogleFonts
+                                                            .manrope(
+                                                          fontSize: bodySize,
+                                                          color: orangeColor,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -425,7 +508,7 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                                 ),
                               ),
 
-                              // + Add more dog profile
+                              // + Add more dog profile (moved further down)
                               GestureDetector(
                                 onTap: () async {
                                   await showModalBottomSheet(
@@ -436,13 +519,20 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                                     builder: (context) {
                                       return WebViewAware(
                                         child: Padding(
-                                          padding: MediaQuery.viewInsetsOf(context),
+                                          padding:
+                                           MediaQuery.viewInsetsOf(context),
                                           child: SizedBox(
-                                            height: MediaQuery.sizeOf(context).height * 0.9,
-                                            child: RegisterCreateDogSheetWidget(
-                                              onSuccessValidation: (dog, avatar) async {
+                                            height:
+                                                MediaQuery.sizeOf(context)
+                                                        .height *
+                                                    0.9,
+                                            child:
+                                                RegisterCreateDogSheetWidget(
+                                              onSuccessValidation:
+                                                  (dog, avatar) async {
                                                 _model.addToDogs(dog);
-                                                _model.addToDogAvatars(avatar);
+                                                _model.addToDogAvatars(
+                                                    avatar);
                                                 _model.addingNewDog = true;
                                                 setState(() {});
                                               },
@@ -461,13 +551,15 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                                   }
                                 },
                                 child: Padding(
-                                  padding: EdgeInsets.only(top: gapSm),
+                                  // changed from gapSm → gapMd to push it lower
+                                  padding: EdgeInsets.only(top: gapMd),
                                   child: Text(
                                     '+ Add more dog profile',
                                     style: GoogleFonts.manrope(
                                       fontSize: bodySize,
                                       fontWeight: FontWeight.w600,
-                                      color: FlutterFlowTheme.of(context).primaryText,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
                                     ),
                                   ),
                                 ),
@@ -496,7 +588,8 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                       onPressed: () async {
                         _model.loading = true;
                         setState(() {});
-                        _model.createdRegisterData = await actions.createRegisterData(
+                        _model.createdRegisterData =
+                            await actions.createRegisterData(
                           FFAppState().RegisteringUser,
                           _model.dogs.toList(),
                           widget.userAvatar,
@@ -505,7 +598,8 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                           widget.password,
                           widget.passwordConfirmation,
                         );
-                        _model.registerSuccess = await actions.customRegister(
+                        _model.registerSuccess =
+                            await actions.customRegister(
                           _model.createdRegisterData!,
                         );
                         if (_model.registerSuccess == true) {
@@ -529,7 +623,8 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
                             builder: (context) {
                               return WebViewAware(
                                 child: Padding(
-                                  padding: MediaQuery.viewInsetsOf(context),
+                                  padding:
+                                      MediaQuery.viewInsetsOf(context),
                                   child: const SizedBox(
                                     height: 200.0,
                                     child: WarningSheetWidget(),
@@ -561,7 +656,6 @@ class _RegisterDoneSheetWidgetState extends State<RegisterDoneSheetWidget> {
               ],
             ),
 
-            // Loading overlay
             if (_model.loading == true)
               wrapWithModel(
                 model: _model.loadingViewModel,
