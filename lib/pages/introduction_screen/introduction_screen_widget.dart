@@ -96,14 +96,15 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
     final artMaxW = (w * 0.78).clamp(240.0, 380.0);
     final artMaxH = (h * 0.32).clamp(180.0, 300.0);
 
-    // Buttons
+    // Buttons at the very bottom
     final buttonHeight = (w * 0.14).clamp(48.0, 56.0);
     final buttonRadius = (w * 0.085).clamp(24.0, 36.0);
     final buttonText = (w * 0.04).clamp(14.0, 16.0);
-    final bottomButtonsPad = (h * 0.035 + safe.bottom).clamp(22.0, 44.0);
+    final bottomButtonsPad = (safe.bottom + 8.0); // sit right on the safe bottom
 
     // Reserve space so scroll content never overlaps fixed buttons
-    final contentBottomReserve = bottomButtonsPad + buttonHeight + gapSm + 8.0;
+    final contentBottomReserve =
+        buttonHeight + bottomButtonsPad + gapMd * 1.2; // more space above buttons
 
     return GestureDetector(
       onTap: () {
@@ -232,7 +233,7 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
                     ),
                   ),
 
-                  // Bottom buttons (fixed)
+                  // Bottom buttons (fixed to the very bottom)
                   Positioned(
                     bottom: bottomButtonsPad,
                     left: sidePad,
