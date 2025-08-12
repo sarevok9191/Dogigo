@@ -4,12 +4,14 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:math' as math;
+
 import 'introduction_screen_model.dart';
 export 'introduction_screen_model.dart';
 
@@ -30,8 +32,8 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Headline colors
-  Color heroBaseColor = Colors.black;              // "Where Dogs Make"
-  Color heroAccentColor = const Color(0xFFF25822); // "Best Friends."
+  final Color heroBaseColor = Colors.black;              // "Where Dogs Make"
+  final Color heroAccentColor = const Color(0xFFF25822); // "Best Friends."
 
   @override
   void initState() {
@@ -50,66 +52,58 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
     super.dispose();
   }
 
+  List<BoxShadow> _liftShadow(double a, double b, double y) => [
+        BoxShadow(
+          color: Colors.black.withOpacity(a),
+          blurRadius: 24,
+          offset: Offset(0, y),
+        ),
+        BoxShadow(
+          color: Colors.black.withOpacity(b),
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ];
+
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
     // =================== Responsive tokens ===================
-    final size = MediaQuery.sizeOf(context);
-    final w = size.width;
-    final h = size.height;
+    final w = MediaQuery.sizeOf(context).width;
+    final h = MediaQuery.sizeOf(context).height;
     final minSide = math.min(w, h);
+    final safe = MediaQuery.of(context).padding;
 
     // Spacing
-    final sidePad = (w * 0.08).clamp(16.0, 32.0);
-    final topLogoPad = (h * 0.09).clamp(56.0, 100.0);
-    final gapXs = (w * 0.02).clamp(4.0, 10.0);
-    final gapSm = (w * 0.03).clamp(8.0, 14.0);
-    final gapMd = (w * 0.05).clamp(16.0, 28.0);
-
-    // Logo
-    final logoW = (w * 0.26).clamp(88.0, 140.0);
-    final logoH = (logoW * 0.5).clamp(36.0, 64.0);
+    final sidePad = (w * 0.08).clamp(16.0, 28.0);
+    final topLogoPad = (h * 0.08).clamp(44.0, 90.0);
+    final gapXs = (w * 0.02).clamp(6.0, 10.0);
+    final gapSm = (w * 0.03).clamp(10.0, 14.0);
+    final gapMd = (w * 0.06).clamp(16.0, 28.0);
 
     // App name
-    final appNameSize = (w * 0.11).clamp(28.0, 48.0);
+    final appNameSize = (w * 0.11).clamp(28.0, 44.0);
 
     // Hero text
-    final heroFontSize = (w * 0.085).clamp(24.0, 40.0);
-    final headlineGap = (w * 0.02).clamp(6.0, 12.0);
-    final subtitleTopGap = (w * 0.06).clamp(20.0, 36.0);
+    final heroFontSize = (w * 0.085).clamp(24.0, 38.0);
+    final headlineGap = (w * 0.02).clamp(6.0, 10.0);
+    final subtitleTopGap = (w * 0.06).clamp(18.0, 28.0);
     final subtitleFont = (w * 0.04).clamp(13.0, 16.0);
-    const subtitleLineHeight = 1.5;
 
-    // Artwork
-    final imageHeight = math.min(w * 0.72, h * 0.42);
-    // IMPORTANT: no overlap now
-    final pullUp = 0.0;
+    // Single center image sizing (no crop)
+    const dogImage = 'assets/images/introscreendogs.png';
+    final artMaxW = (w * 0.78).clamp(240.0, 380.0);
+    final artMaxH = (h * 0.32).clamp(180.0, 300.0);
 
     // Buttons
     final buttonHeight = (w * 0.14).clamp(48.0, 56.0);
     final buttonRadius = (w * 0.085).clamp(24.0, 36.0);
     final buttonText = (w * 0.04).clamp(14.0, 16.0);
-    final bottomButtonsPad =
-        (h * 0.04 + MediaQuery.of(context).padding.bottom).clamp(24.0, 48.0);
+    final bottomButtonsPad = (h * 0.035 + safe.bottom).clamp(22.0, 44.0);
 
-    // Reserve space inside the content so it never sits under fixed buttons
+    // Reserve space so scroll content never overlaps fixed buttons
     final contentBottomReserve = bottomButtonsPad + buttonHeight + gapSm + 8.0;
-
-    List<BoxShadow> bottomLiftShadow() => [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.14),
-            blurRadius: 24,
-            spreadRadius: 0,
-            offset: const Offset(0, 12),
-          ),
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            spreadRadius: 0,
-            offset: const Offset(0, 2),
-          ),
-        ];
 
     return GestureDetector(
       onTap: () {
@@ -134,160 +128,118 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
             child: SafeArea(
               child: Stack(
                 children: [
-                  // ============ LANGUAGE SELECTOR ============
+                  // Language selector (existing)
                   Positioned(
-                    top: (h * 0.015).clamp(8.0, 16.0),
+                    top: (h * 0.010).clamp(6.0, 12.0),
                     right: (w * 0.04).clamp(12.0, 20.0),
                     child: const _LanguageChip(),
                   ),
 
-                  // ===================== MAIN CONTENT =====================
+                  // Main content (scrollable; no overlaps)
                   Align(
                     alignment: Alignment.center,
                     child: SingleChildScrollView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: contentBottomReserve),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // Top logo + app name
-                            Padding(
-                              padding: EdgeInsets.only(top: topLogoPad),
-                              child: Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/images/login-logo.svg',
-                                    width: logoW,
-                                    height: logoH,
-                                  ),
-                                  SizedBox(height: gapXs),
-                                  Text(
-                                    FFLocalizations.of(context)
-                                        .getText('hkf2u7xg' /* Patido */),
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: GoogleFonts.kumbhSans(
-                                            fontWeight: FontWeight.bold,
-                                          ).fontFamily,
-                                          color:
-                                              FlutterFlowTheme.of(context).primary,
-                                          fontSize: appNameSize,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                      physics: const BouncingScrollPhysics(),
+                      padding: EdgeInsets.only(
+                        left: sidePad,
+                        right: sidePad,
+                        bottom: contentBottomReserve,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Brand
+                          SizedBox(height: topLogoPad),
+                          SvgPicture.asset(
+                            'assets/images/login-logo.svg',
+                            width: (w * 0.26).clamp(88.0, 140.0),
+                            height: ((w * 0.26) * 0.5).clamp(36.0, 64.0),
+                          ),
+                          SizedBox(height: gapXs),
+                          Text(
+                            FFLocalizations.of(context).getText('hkf2u7xg' /* Patido */),
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                  fontFamily: GoogleFonts.kumbhSans(
+                                    fontWeight: FontWeight.bold,
+                                  ).fontFamily,
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  fontSize: appNameSize,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                          SizedBox(height: gapSm),
 
-                            // Image + Headline stack
-                            Padding(
-                              padding: EdgeInsets.only(top: gapSm),
-                              child: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Stack(
-                                        clipBehavior: Clip.none,
-                                        alignment: Alignment.topCenter,
-                                        children: [
-                                          // Image
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: sidePad),
-                                            child: SizedBox(
-                                              height: imageHeight,
-                                              child: Image.asset(
-                                                'assets/images/introscreendogs.png',
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                          ),
-                                          // Headline + subtitle (no overlap)
-                                          Positioned(
-                                            bottom: -pullUp, // == 0
-                                            left: sidePad,
-                                            right: sidePad,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  'Where Dogs Make',
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.manrope(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: heroFontSize,
-                                                    height: 1.1,
-                                                    color: heroBaseColor,
-                                                  ),
-                                                ),
-                                                SizedBox(height: headlineGap),
-                                                Text(
-                                                  'Best Friends.',
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.manrope(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: heroFontSize,
-                                                    height: 1.1,
-                                                    color: heroAccentColor,
-                                                  ),
-                                                ),
-                                                SizedBox(height: subtitleTopGap),
-                                                Text(
-                                                  'Connect with local dog owners, plan playdates,\nand find furry friends nearby!',
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.manrope(
-                                                    fontSize: subtitleFont,
-                                                    fontWeight: FontWeight.w500,
-                                                    height: subtitleLineHeight,
-                                                    color:
-                                                        FlutterFlowTheme.of(context)
-                                                            .secondaryText,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      // With no overlap, just a normal gap below the stack
-                                      SizedBox(height: gapMd),
-
-                                      // Orange separator line
-                                      Center(
-                                        child: Container(
-                                          width: (w * 0.18).clamp(48.0, 80.0),
-                                          height:
-                                              (minSide * 0.012).clamp(4.0, 8.0),
-                                          decoration: BoxDecoration(
-                                            color: heroAccentColor,
-                                            borderRadius:
-                                                BorderRadius.circular(999),
-                                            boxShadow: bottomLiftShadow(),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: gapSm),
-                                    ],
-                                  );
-                                },
-                              ),
+                          // Single image (never cropped)
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: artMaxW,
+                              maxHeight: artMaxH,
                             ),
-                          ],
-                        ),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Image.asset(dogImage),
+                            ),
+                          ),
+
+                          // Headline + subtitle
+                          SizedBox(height: gapMd),
+                          Text(
+                            'Where Dogs Make',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.manrope(
+                              fontWeight: FontWeight.w800,
+                              fontSize: heroFontSize,
+                              height: 1.15,
+                              color: heroBaseColor,
+                            ),
+                          ),
+                          SizedBox(height: headlineGap),
+                          Text(
+                            'Best Friends.',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.manrope(
+                              fontWeight: FontWeight.w800,
+                              fontSize: heroFontSize,
+                              height: 1.15,
+                              color: heroAccentColor,
+                            ),
+                          ),
+                          SizedBox(height: subtitleTopGap),
+                          Text(
+                            'Connect with local dog owners, plan playdates,\nand find furry friends nearby!',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.manrope(
+                              fontSize: subtitleFont,
+                              fontWeight: FontWeight.w500,
+                              height: 1.45,
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                            ),
+                          ),
+
+                          // Orange separator line
+                          SizedBox(height: gapMd),
+                          Container(
+                            width: (w * 0.18).clamp(48.0, 82.0),
+                            height: (minSide * 0.011).clamp(4.0, 8.0),
+                            decoration: BoxDecoration(
+                              color: heroAccentColor,
+                              borderRadius: BorderRadius.circular(999),
+                              boxShadow: _liftShadow(0.14, 0.05, 10),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
 
-                  // Buttons (fixed to bottom)
+                  // Bottom buttons (fixed)
                   Positioned(
                     bottom: bottomButtonsPad,
                     left: sidePad,
                     right: sidePad,
                     child: Row(
                       children: [
-                        // Login (outlined)
+                        // Sign in (outlined)
                         Expanded(
                           child: Container(
                             decoration: BoxDecoration(
@@ -300,13 +252,9 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
                             ),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                await actions.clearNavigate(
-                                  'LoginScreen',
-                                  <String, dynamic>{},
-                                );
+                                await actions.clearNavigate('LoginScreen', <String, dynamic>{});
                               },
-                              text: FFLocalizations.of(context)
-                                  .getText('7se73sei' /* GİRİŞ YAP */),
+                              text: FFLocalizations.of(context).getText('7se73sei' /* GİRİŞ YAP */),
                               options: FFButtonOptions(
                                 height: buttonHeight,
                                 color: Colors.transparent,
@@ -316,14 +264,13 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
                                   fontWeight: FontWeight.bold,
                                 ),
                                 elevation: 0.0,
-                                borderRadius:
-                                    BorderRadius.circular(buttonRadius),
+                                borderRadius: BorderRadius.circular(buttonRadius),
                               ),
                             ),
                           ),
                         ),
                         SizedBox(width: gapSm),
-                        // Register (gradient + bottom-lift shadow)
+                        // Sign up (gradient)
                         Expanded(
                           child: Container(
                             decoration: BoxDecoration(
@@ -333,7 +280,7 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                               ),
-                              boxShadow: bottomLiftShadow(),
+                              boxShadow: _liftShadow(0.14, 0.05, 10),
                             ),
                             child: FFButtonWidget(
                               onPressed: () async {
@@ -343,15 +290,12 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
                                     kTransitionInfoKey: TransitionInfo(
                                       hasTransition: true,
                                       transitionType: PageTransitionType.fade,
-                                      duration: const Duration(
-                                        milliseconds: 0,
-                                      ),
+                                      duration: const Duration(milliseconds: 0),
                                     ),
                                   },
                                 );
                               },
-                              text: FFLocalizations.of(context)
-                                  .getText('akokz5se' /* KAYIT OL */),
+                              text: FFLocalizations.of(context).getText('akokz5se' /* KAYIT OL */),
                               options: FFButtonOptions(
                                 height: buttonHeight,
                                 color: Colors.transparent,
@@ -361,8 +305,7 @@ class _IntroductionScreenWidgetState extends State<IntroductionScreenWidget> {
                                   fontWeight: FontWeight.bold,
                                 ),
                                 elevation: 0.0,
-                                borderRadius:
-                                    BorderRadius.circular(buttonRadius),
+                                borderRadius: BorderRadius.circular(buttonRadius),
                               ),
                             ),
                           ),
@@ -387,7 +330,7 @@ class _LanguageChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width;
-    final chipH = (w * 0.09).clamp(32.0, 40.0);
+    final chipH = (w * 0.09).clamp(32.0, 38.0);
     final padH = (w * 0.03).clamp(10.0, 14.0);
     final iconSize = (chipH * 0.45).clamp(14.0, 18.0);
     final textSize = (w * 0.036).clamp(12.0, 14.0);
